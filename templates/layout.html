@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}Vibe Cafe{% endblock %}</title>
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    
+    <style>
+        :root {
+            --bg: #a97454; --text: #2c1810; --accent: #6f4e37; --footer-bg: #1c0e05;
+            --sub-bg: #c69c6d; --cream: #f4f1eb; --warm-white: #faf8f3;
+            --coffee-dark: #3c2415; --coffee-light: #d4b896;
+        }
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--bg) 0%, #b8825d 100%);
+            color: var(--text); display: flex; flex-direction: column;
+            min-height: 100vh; line-height: 1.6;
+        }
+        
+        /* Animations */
+        @keyframes float { 0% { transform: translateY(100vh) rotate(0deg); } 100% { transform: translateY(-100px) rotate(360deg); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .coffee-beans { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; overflow: hidden; }
+        .coffee-bean { position: absolute; width: 8px; height: 8px; background: var(--coffee-dark); border-radius: 50%; opacity: 0.1; animation: float 20s infinite linear; }
+        
+        /* Navigation */
+        nav {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--coffee-dark) 100%);
+            padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between;
+            flex-wrap: wrap; gap: 1rem; box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            position: relative; backdrop-filter: blur(10px);
+        }
+        
+        .logo-container {
+            display: flex; align-items: center; gap: 1rem; text-decoration: none;
+            transition: all 0.3s ease; position: relative; z-index: 10;
+        }
+        .logo-container:hover { transform: scale(1.05); filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)); }
+        
+        .logo-img { height: 45px; border-radius: 50%; border: 3px solid var(--cream); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        
+        .logo-text {
+            font-family: 'Dancing Script', cursive; font-size: 1.8rem; font-weight: 600;
+            color: var(--cream); text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .nav-menu {
+            display: flex; gap: 1.5rem; list-style: none; align-items: center;
+            flex-wrap: wrap; position: relative; z-index: 10;
+        }
+        
+        .nav-link {
+            color: var(--cream); text-decoration: none; font-weight: 500;
+            display: flex; align-items: center; gap: 0.5rem; font-size: 0.95rem;
+            transition: all 0.3s ease; padding: 0.6rem 1rem; border-radius: 25px;
+            position: relative; overflow: hidden;
+        }
+        
+        .nav-link::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        .nav-link:hover::before { left: 100%; }
+        
+        .nav-link:hover, .nav-link.active {
+            color: #fff; background: rgba(255,255,255,0.15);
+            transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #f4c58e 0%, #e6b877 100%);
+            color: var(--coffee-dark); padding: 0.6rem 1.2rem; border-radius: 30px;
+            text-decoration: none; font-weight: 600; font-size: 0.95rem;
+            transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(244, 197, 142, 0.4);
+            position: relative; overflow: hidden;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px); box-shadow: 0 8px 25px rgba(244, 197, 142, 0.6);
+        }
+        
+        /* Search */
+        .search-container { position: relative; flex-grow: 1; max-width: 350px; min-width: 250px; }
+        
+        .search-form {
+            display: flex; align-items: center; background: var(--warm-white);
+            border-radius: 30px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            transition: all 0.3s ease; border: 2px solid transparent;
+        }
+        
+        .search-form:focus-within {
+            box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+            transform: translateY(-2px); border-color: var(--coffee-light);
+        }
+        
+        .search-input {
+            border: none; padding: 0.8rem 1.2rem; outline: none; font-size: 0.95rem;
+            width: 100%; background: transparent; color: var(--text); font-family: inherit;
+        }
+        .search-input::placeholder { color: rgba(44, 24, 16, 0.6); font-style: italic; }
+        
+        .search-btn {
+            border: none; background: linear-gradient(135deg, var(--accent) 0%, var(--coffee-dark) 100%);
+            color: white; padding: 0.8rem 1.2rem; font-size: 1rem; cursor: pointer;
+            transition: all 0.3s ease; position: relative; overflow: hidden;
+        }
+        .search-btn:hover { background: linear-gradient(135deg, var(--coffee-dark) 0%, var(--accent) 100%); }
+        
+        .search-suggestions {
+            position: absolute; top: 100%; left: 0; right: 0; background: var(--warm-white);
+            border-radius: 0 0 20px 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            max-height: 250px; overflow-y: auto; z-index: 1000; display: none;
+            backdrop-filter: blur(20px); border: 1px solid rgba(111, 78, 55, 0.1);
+        }
+        
+        .search-suggestion {
+            padding: 1rem 1.2rem; cursor: pointer; border-bottom: 1px solid rgba(111, 78, 55, 0.1);
+            display: flex; align-items: center; gap: 0.75rem; transition: all 0.3s ease;
+        }
+        .search-suggestion:hover { background: rgba(111, 78, 55, 0.05); transform: translateX(8px); color: var(--accent); }
+        
+        /* Main Content */
+        main { flex: 1; padding: 0; width: 100%; position: relative; }
+
+        /* Center container for login/signup forms */
+        .centered-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 120px); /* adjust based on nav + footer height */
+            padding: 2rem;
+        }
+        
+        .sub-container {
+            background: linear-gradient(135deg, var(--sub-bg) 0%, var(--coffee-light) 100%);
+            width: 100%; padding: 3rem 0; position: relative;
+        }
+        
+        main h1, main h2, main h3, main h4, main h5, main h6 {
+            font-family: 'Playfair Display', serif; font-weight: 600; line-height: 1.3;
+            margin-bottom: 1.5rem; background: linear-gradient(135deg, var(--text), var(--accent));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; position: relative;
+        }
+        
+        main h1 { font-size: 3rem; margin-bottom: 2rem; }
+        main h2 { font-size: 2.2rem; margin-bottom: 1.5rem; }
+        main h3 { font-size: 1.8rem; }
+        main p { line-height: 1.8; margin-bottom: 1.5rem; font-size: 1.05rem; color: rgba(44, 24, 16, 0.9); }
+        
+        /* Enhanced Elements */
+        main button, main .btn, main input[type="submit"] {
+            background: linear-gradient(135deg, var(--accent), var(--coffee-dark));
+            color: white; border: none; padding: 1rem 2rem; border-radius: 30px;
+            font-weight: 600; cursor: pointer; transition: all 0.4s ease;
+            box-shadow: 0 6px 20px rgba(111, 78, 55, 0.3); font-family: inherit;
+            font-size: 1rem; position: relative; overflow: hidden;
+        }
+        
+        main button:hover, main .btn:hover, main input[type="submit"]:hover {
+            transform: translateY(-3px); box-shadow: 0 10px 30px rgba(111, 78, 55, 0.4);
+        }
+        
+        main input[type="text"], main input[type="email"], main input[type="password"],
+        main input[type="number"], main input[type="tel"], main textarea, main select {
+            border: 2px solid rgba(111, 78, 55, 0.3); border-radius: 15px;
+            padding: 1rem 1.2rem; font-size: 1rem; transition: all 0.3s ease;
+            background: var(--warm-white); backdrop-filter: blur(10px);
+            font-family: inherit; color: var(--text);
+        }
+        
+        main input:focus, main textarea:focus, main select:focus {
+            outline: none; border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(111, 78, 55, 0.1);
+            transform: translateY(-2px); background: white;
+        }
+        
+        main .card, main .container, main .box, main .item {
+            background: var(--warm-white); backdrop-filter: blur(20px);
+            border-radius: 20px; padding: 2rem; margin-bottom: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.4s ease; position: relative;
+        }
+        
+        main .card:hover, main .container:hover, main .box:hover, main .item:hover {
+            transform: translateY(-6px); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+        
+        main img { border-radius: 15px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); transition: all 0.4s ease; }
+        main img:hover { transform: scale(1.03); box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2); }
+        
+        main table {
+            width: 100%; border-collapse: collapse; background: var(--warm-white);
+            backdrop-filter: blur(20px); border-radius: 15px; overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1); margin-bottom: 2rem;
+        }
+        
+        main table th {
+            background: linear-gradient(135deg, var(--accent), var(--coffee-dark));
+            color: white; padding: 1.2rem; font-weight: 600; text-align: left;
+            font-family: 'Playfair Display', serif;
+        }
+        
+        main table td { padding: 1.2rem; border-bottom: 1px solid rgba(111, 78, 55, 0.1); transition: all 0.3s ease; }
+        main table tr:hover td { background: rgba(111, 78, 55, 0.05); transform: scale(1.01); }
+        
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, var(--footer-bg) 0%, #0f0601 100%);
+            color: #ddd; padding: 4rem 2rem 2rem; font-size: 0.9rem; position: relative;
+        }
+        
+        footer::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--coffee-light), var(--accent));
+        }
+        
+        .footer-content {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 3rem; max-width: 1200px; margin: 0 auto;
+        }
+        
+        .footer-section h3 {
+            font-family: 'Playfair Display', serif; color: #f4c58e;
+            margin-bottom: 1.5rem; font-size: 1.4rem; position: relative; padding-bottom: 0.5rem;
+        }
+        
+        .footer-section h3::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 30px; height: 2px;
+            background: linear-gradient(90deg, #f4c58e, transparent);
+        }
+        
+        .footer-links a {
+            color: #ccc; text-decoration: none; display: block; margin-bottom: 0.75rem;
+            transition: all 0.3s ease; padding: 0.3rem 0; position: relative; padding-left: 1.5rem;
+        }
+        
+        .footer-links a::before {
+            content: '▶'; position: absolute; left: 0; color: var(--accent);
+            font-size: 0.8rem; transition: transform 0.3s ease;
+        }
+        
+        .footer-links a:hover::before { transform: translateX(4px); }
+        .footer-links a:hover { color: #f4c58e; transform: translateX(8px); }
+        
+        .social-links { display: flex; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap; }
+        
+        .social-link {
+            color: white; width: 50px; height: 50px; display: flex; align-items: center;
+            justify-content: center; border-radius: 15px; text-decoration: none;
+            font-size: 1.3rem; transition: all 0.4s ease; position: relative; overflow: hidden;
+        }
+        
+        .social-link:hover { transform: translateY(-5px) scale(1.1); box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        
+        .social-link.facebook { background: linear-gradient(135deg, #1877F2, #0d5dc7); }
+        .social-link.instagram { background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D); }
+        .social-link.twitter { background: linear-gradient(135deg, #000000, #333333); }
+        .social-link.youtube { background: linear-gradient(135deg, #FF0000, #cc0000); }
+        .social-link.linkedin { background: linear-gradient(135deg, #0A66C2, #004182); }
+        
+        .footer-bottom {
+            text-align: center; padding-top: 2rem; margin-top: 3rem;
+            border-top: 1px solid #333; font-size: 0.85rem; color: #aaa; position: relative;
+        }
+        
+        .footer-bottom::before {
+            content: '☕'; position: absolute; top: -10px; left: 50%;
+            transform: translateX(-50%); background: var(--footer-bg);
+            padding: 0 1rem; color: var(--accent);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav { padding: 1rem; flex-direction: column; gap: 1rem; }
+            .nav-menu { gap: 1rem; justify-content: center; }
+            .search-container { order: -1; max-width: 100%; width: 100%; }
+            main h1 { font-size: 2.2rem; }
+            main h2 { font-size: 1.8rem; }
+            .footer-content { grid-template-columns: 1fr; gap: 2rem; }
+        }
+        
+        /* Utilities */
+        .fade-in { animation: fadeIn 0.8s ease-out; }
+        html { scroll-behavior: smooth; }
+        ::selection { background: rgba(111, 78, 55, 0.3); color: var(--text); }
+        
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(111, 78, 55, 0.1); }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, var(--accent), var(--coffee-dark)); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: linear-gradient(135deg, var(--coffee-dark), var(--accent)); }
+    </style>
+</head>
+<body>
+    <!-- Floating coffee beans background -->
+    <div class="coffee-beans"></div>
+
+    <nav>
+        <a href="{{ url_for('home') }}" class="logo-container">
+            <img src="{{ url_for('static', filename='vibecafe.jpg') }}" alt="Vibe Cafe Logo" class="logo-img" />
+            <div class="logo-text">Vibe Cafe</div>
+        </a>
+
+        <div class="search-container">
+            <form class="search-form" action="{{ url_for('search') }}" method="get">
+                <input type="search" name="query" class="search-input" placeholder="Search our delicious menu..." autocomplete="off" />
+                <button type="submit" class="search-btn">
+                    <i class="fas fa-search"></i>
+                </button>
+            </form>
+            <div class="search-suggestions" id="searchSuggestions" style="display:none;"></div>
+        </div>
+
+        <ul class="nav-menu">
+            <li><a href="{{ url_for('home') }}" class="nav-link"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="{{ url_for('about') }}" class="nav-link"><i class="fas fa-heart"></i> About</a></li>
+            <li><a href="{{ url_for('menu') }}" class="nav-link"><i class="fas fa-coffee"></i> Menu</a></li>
+            <li><a href="{{ url_for('contacts') }}" class="nav-link"><i class="fas fa-envelope"></i> Contact</a></li>
+            <li><a href="{{ url_for('login') }}" class="nav-link"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+            <li><a href="{{ url_for('signup') }}" class="btn-primary"><i class="fas fa-user-plus"></i> <span>Sign Up</span></a></li>
+            <li><a href="{{ url_for('cart') }}" class="nav-link"><i class="fas fa-shopping-cart"></i> Cart</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About Vibe Cafe</h3>
+                <p>Step into Vibe Cafe, where every cup tells a story and every bite brings comfort. We're more than just a coffee shop – we're your neighborhood gathering place, crafting authentic experiences one brew at a time.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link facebook" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-link instagram" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-link twitter" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link youtube" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="social-link linkedin" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <div class="footer-links">
+                    <a href="{{ url_for('home') }}">Home</a>
+                    <a href="{{ url_for('about') }}">About Us</a>
+                    <a href="{{ url_for('menu') }}">Our Menu</a>
+                    <a href="{{ url_for('contacts') }}">Contact</a>
+                    <a href="{{ url_for('login') }}">Login</a>
+                    <a href="{{ url_for('signup') }}">Sign Up</a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Menu Categories</h3>
+                <div class="footer-links">
+                    <a href="{{ url_for('menu') }}#coffee">Coffee & Espresso</a>
+                    <a href="{{ url_for('menu') }}#tea">Tea & Herbal</a>
+                    <a href="{{ url_for('menu') }}#pastries">Pastries & Sweets</a>
+                    <a href="{{ url_for('menu') }}#sandwiches">Sandwiches & Wraps</a>
+                    <a href="{{ url_for('menu') }}#smoothies">Smoothies & Shakes</a>
+                    <a href="{{ url_for('menu') }}#breakfast">Breakfast Specials</a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contact Info</h3>
+                <div class="footer-links">
+                    <a href="tel:+1234567890"><i class="fas fa-phone"></i> (123) 456-7890</a>
+                    <a href="mailto:info@vibecafe.com"><i class="fas fa-envelope"></i> info@vibecafe.com</a>
+                    <a href="#"><i class="fas fa-map-marker-alt"></i> 123 Coffee Street, City, State 12345</a>
+                    <a href="#"><i class="fas fa-clock"></i> Mon-Fri: 6AM-9PM, Sat-Sun: 7AM-10PM</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 Vibe Cafe. All rights reserved. | <a href="#" style="color: var(--accent); text-decoration: none;">Privacy Policy</a> | <a href="#" style="color: var(--accent); text-decoration: none;">Terms of Service</a></p>
+        </div>
+    </footer>
+
+    <script>
+        // Create floating coffee beans
+        function createCoffeeBeans() {
+            const container = document.querySelector('.coffee-beans');
+            const beanCount = 15;
+            
+            for (let i = 0; i < beanCount; i++) {
+                const bean = document.createElement('div');
+                bean.className = 'coffee-bean';
+                bean.style.left = Math.random() * 100 + '%';
+                bean.style.animationDelay = Math.random() * 20 + 's';
+                bean.style.animationDuration = (20 + Math.random() * 10) + 's';
+                container.appendChild(bean);
+            }
+        }
+
+        // Normalize item name for URL (lowercase, hyphens)
+        function normalizeName(name) {
+            return name.toLowerCase().replace(/\s+/g, '-');
+        }
+        
+        // Menu items data
+        const menu_items = [
+            {'name': 'Burger', 'description': 'Juicy grilled burger with fresh lettuce and tomato.', 'price': 150, 'image': 'berger.jpg'},
+            {'name': 'Chocolate Cake', 'description': 'Rich and moist chocolate cake slice.', 'price': 120, 'image': 'chocolate_cake.jpg'},
+            {'name': 'Cold Coffee', 'description': 'Refreshing cold coffee with ice cream.', 'price': 100, 'image': 'cold_coffee.jpg'},
+            {'name': 'Pizza', 'description': 'Cheesy pizza topped with fresh veggies and pepperoni.', 'price': 250, 'image': 'pizza.jpg'},
+            {'name': 'Sandwich', 'description': 'Toasted sandwich with cheese, tomato, and lettuce.', 'price': 90, 'image': 'sandwiches.jpg'},
+            {'name': 'Hazelnut Coffee', 'description': 'Smooth coffee with rich hazelnut flavor.', 'price': 120, 'image': 'hazelnut_coffee.jpg'},
+            {'name': 'French Fries', 'description': 'Crispy golden fries with a sprinkle of salt.', 'price': 80, 'image': 'frenchesfries.jpg'},
+            {'name': 'Chocolate Chip Frappuccino', 'description': 'Cold blended coffee with chocolate chips and whipped cream.', 'price': 150, 'image': 'chocolate_chip_frappuccino.jpg'},
+            {'name': 'Hot Coffee', 'description': 'Classic hot brewed coffee to warm your day.', 'price': 100, 'image': 'hot_coffee.jpg'}
+        ];
+        
+        const searchInput = document.querySelector('.search-input');
+        const searchSuggestions = document.querySelector('.search-suggestions');
+
+        if (searchInput) {
+            searchInput.addEventListener('input', function(e) {
+                const query = e.target.value.trim().toLowerCase();
+                if (query.length > 1) {
+                    const filtered = menu_items.filter(item => item.name.toLowerCase().includes(query));
+                    if (filtered.length > 0) {
+                        searchSuggestions.innerHTML = filtered.map(item => 
+                            `<div class="search-suggestion" data-name="${item.name}">
+                                <i class="fas fa-coffee"></i> ${item.name}
+                            </div>`
+                        ).join('');
+                        searchSuggestions.style.display = 'block';
+                    } else {
+                        searchSuggestions.style.display = 'none';
+                    }
+                } else {
+                    searchSuggestions.style.display = 'none';
+                }
+            });
+
+            // Hide suggestions when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.search-container')) {
+                    searchSuggestions.style.display = 'none';
+                }
+            });
+
+            // Click on suggestion redirects to single item page
+            searchSuggestions.addEventListener('click', function(e) {
+                const suggestion = e.target.closest('.search-suggestion');
+                if (suggestion) {
+                    const itemName = suggestion.getAttribute('data-name');
+                    if (itemName) {
+                        window.location.href = "{{ url_for('menu_item', item_name='') }}" + encodeURIComponent(normalizeName(itemName));
+                    }
+                }
+            });
+
+            // Submit search form redirects to matched item or menu page
+            const searchForm = document.querySelector('.search-form');
+            searchForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const query = searchInput.value.trim().toLowerCase();
+                if (!query) return;
+
+                const matched = menu_items.find(item => item.name.toLowerCase() === query);
+                if (matched) {
+                    window.location.href = "{{ url_for('menu_item', item_name='') }}" + encodeURIComponent(normalizeName(matched.name));
+                } else {
+                    window.location.href = "{{ url_for('menu') }}" + '?query=' + encodeURIComponent(query);
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            createCoffeeBeans();
+
+            // Fade-in animation for main children
+            const elements = document.querySelectorAll('main > *');
+            elements.forEach((el, index) => {
+                el.style.animationDelay = (index * 0.1) + 's';
+                el.classList.add('fade-in');
+            });
+        });
+    </script>
+</body>
+</html>

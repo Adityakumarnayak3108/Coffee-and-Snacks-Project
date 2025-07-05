@@ -1,0 +1,500 @@
+{% extends "layout.html" %}
+
+{% block title %}Member Discount Menu - Vibe Cafe{% endblock %}
+
+{% block head %}
+<style>
+    .discount-container {
+        max-width: 700px;
+        margin: 30px auto;
+        background: #fff;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        border: 3px solid #d4af37;
+    }
+
+    .member-header {
+        text-align: center;
+        margin-bottom: 30px;
+        padding: 20px;
+        background: linear-gradient(135deg, #d4af37 0%, #f4e04d 100%);
+        border-radius: 12px;
+        color: #8b4513;
+        border: 2px solid #b8860b;
+    }
+
+    .member-header h1 {
+        margin: 0 0 10px 0;
+        font-size: 2.5rem;
+        font-weight: 700;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .member-header .welcome-text {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+
+    .member-header .discount-text {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #d2691e;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+
+    .discount-badge {
+        display: inline-block;
+        background: #e74c3c;
+        color: white;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 700;
+        margin-left: 10px;
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+
+    ul.discount-menu-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    ul.discount-menu-list li {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        margin-bottom: 15px;
+        padding: 20px;
+        border-radius: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 18px;
+        color: #2c3e50;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+        position: relative;
+        overflow: hidden;
+    }
+
+    ul.discount-menu-list li:hover {
+        background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+        border-color: #d4af37;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+
+    ul.discount-menu-list li::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 4px;
+        background: linear-gradient(135deg, #d4af37 0%, #f4e04d 100%);
+    }
+
+    .item-info {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        flex-grow: 1;
+    }
+
+    .item-info img {
+        width: 70px;
+        height: 70px;
+        object-fit: cover;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        border: 2px solid #d4af37;
+    }
+
+    .item-details {
+        flex-grow: 1;
+    }
+
+    .item-name {
+        font-weight: 700;
+        font-size: 1.2rem;
+        color: #2c3e50;
+        margin-bottom: 5px;
+    }
+
+    .pricing-section {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 8px;
+        margin-right: 20px;
+    }
+
+    .original-price {
+        color: #7f8c8d;
+        text-decoration: line-through;
+        font-size: 1rem;
+        font-weight: 500;
+    }
+
+    .discounted-price {
+        color: #e74c3c;
+        font-size: 1.3rem;
+        font-weight: 700;
+    }
+
+    .savings {
+        color: #27ae60;
+        font-size: 0.9rem;
+        font-weight: 600;
+        background: #d5f4e6;
+        padding: 2px 8px;
+        border-radius: 12px;
+    }
+
+    ul.discount-menu-list button {
+        background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+        border: none;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 700;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    ul.discount-menu-list button:hover {
+        background: linear-gradient(135deg, #229954 0%, #27ae60 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+    }
+
+    ul.discount-menu-list button:active {
+        transform: translateY(0);
+    }
+
+    .member-benefits {
+        background: linear-gradient(135deg, #f3e9dc 0%, #e8d5c7 100%);
+        border: 2px solid #d2b48c;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    .member-benefits h3 {
+        color: #6f4e37;
+        margin-bottom: 15px;
+        font-size: 1.3rem;
+    }
+
+    .member-benefits p {
+        color: #5d432c;
+        font-weight: 500;
+        margin: 0;
+    }
+
+    .logout-section {
+        text-align: center;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 2px solid #e9ecef;
+    }
+
+    .logout-btn {
+        background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-block;
+        margin-right: 15px;
+    }
+
+    .logout-btn:hover {
+        background: linear-gradient(135deg, #495057 0%, #343a40 100%);
+        transform: translateY(-1px);
+    }
+
+    .regular-menu-btn {
+        background: linear-gradient(135deg, #6f4e37 0%, #5d432c 100%);
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-block;
+    }
+
+    .regular-menu-btn:hover {
+        background: linear-gradient(135deg, #5d432c 0%, #4a3325 100%);
+        transform: translateY(-1px);
+    }
+
+    /* Sample prices for demonstration */
+    .price-₹150 .original-price::after { content: "₹150"; }
+    .price-₹150 .discounted-price::after { content: "₹135"; }
+    .price-₹150 .savings::after { content: "Save ₹15"; }
+
+    .price-₹200 .original-price::after { content: "₹200"; }
+    .price-₹200 .discounted-price::after { content: "₹180"; }
+    .price-₹200 .savings::after { content: "Save ₹20"; }
+
+    .price-₹250 .original-price::after { content: "₹250"; }
+    .price-₹250 .discounted-price::after { content: "₹225"; }
+    .price-₹250 .savings::after { content: "Save ₹25"; }
+
+    .price-₹120 .original-price::after { content: "₹120"; }
+    .price-₹120 .discounted-price::after { content: "₹108"; }
+    .price-₹120 .savings::after { content: "Save ₹12"; }
+
+    .price-₹80 .original-price::after { content: "₹80"; }
+    .price-₹80 .discounted-price::after { content: "₹72"; }
+    .price-₹80 .savings::after { content: "Save ₹8"; }
+
+    .price-₹180 .original-price::after { content: "₹180"; }
+    .price-₹180 .discounted-price::after { content: "₹162"; }
+    .price-₹180 .savings::after { content: "Save ₹18"; }
+
+    .price-₹100 .original-price::after { content: "₹100"; }
+    .price-₹100 .discounted-price::after { content: "₹90"; }
+    .price-₹100 .savings::after { content: "Save ₹10"; }
+
+    .price-₹140 .original-price::after { content: "₹140"; }
+    .price-₹140 .discounted-price::after { content: "₹126"; }
+    .price-₹140 .savings::after { content: "Save ₹14"; }
+
+    @media (max-width: 768px) {
+        .discount-container {
+            margin: 20px;
+            padding: 20px;
+        }
+        
+        .member-header h1 {
+            font-size: 2rem;
+        }
+        
+        ul.discount-menu-list li {
+            flex-direction: column;
+            gap: 15px;
+            text-align: center;
+        }
+        
+        .item-info {
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .pricing-section {
+            align-items: center;
+            margin-right: 0;
+        }
+        
+        .logout-section {
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .logout-btn, .regular-menu-btn {
+            display: block;
+            margin: 5px 0;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="discount-container">
+    <div class="member-header">
+        <h1>🌟 Member Exclusive Menu 🌟</h1>
+        <div class="welcome-text">Welcome, {{ session.username }}!</div>
+        <div class="discount-text">Enjoy 10% OFF on Everything!</div>
+    </div>
+
+    <div class="member-benefits">
+        <h3>🎉 You're saving money with every order!</h3>
+        <p>As a valued member, you get exclusive 10% discount on all menu items. The more you order, the more you save!</p>
+    </div>
+
+    <ul class="discount-menu-list">
+        <li>
+            <div class="item-info">
+                <img src="{{ url_for('static', filename='berger.jpg') }}" alt="Burger" />
+                <div class="item-details">
+                    <div class="item-name">Delicious Burger</div>
+                </div>
+            </div>
+            <div class="pricing-section price-₹150">
+                <div class="original-price"></div>
+                <div class="discounted-price"></div>
+                <div class="savings"></div>
+            </div>
+            <button onclick="alert('Added Burger to order at discounted price of ₹135!')">Add to Order</button>
+            <span class="discount-badge">10% OFF</span>
+        </li>
+        
+        <li>
+            <div class="item-info">
+                <img src="{{ url_for('static', filename='chocolate_cake.jpg') }}" alt="Chocolate Cake" />
+                <div class="item-details">
+                    <div class="item-name">Rich Chocolate Cake</div>
+                </div>
+            </div>
+            <div class="pricing-section price-₹200">
+                <div class="original-price"></div>
+                <div class="discounted-price"></div>
+                <div class="savings"></div>
+            </div>
+            <button onclick="alert('Added Chocolate Cake to order at discounted price of ₹180!')">Add to Order</button>
+            <span class="discount-badge">10% OFF</span>
+        </li>
+        
+        <li>
+            <div class="item-info">
+                <img src="{{ url_for('static', filename='chocolate_chip_frappuccino.jpg') }}" alt="Chocolate Chip Frappuccino" />
+                <div class="item-details">
+                    <div class="item-name">Chocolate Chip Frappuccino</div>
+                </div>
+            </div>
+            <div class="pricing-section price-₹250">
+                <div class="original-price"></div>
+                <div class="discounted-price"></div>
+                <div class="savings"></div>
+            </div>
+            <button onclick="alert('Added Chocolate Chip Frappuccino to order at discounted price of ₹225!')">Add to Order</button>
+            <span class="discount-badge">10% OFF</span>
+        </li>
+        
+        <li>
+            <div class="item-info">
+                <img src="{{ url_for('static', filename='cold_coffee.jpg') }}" alt="Cold Coffee" />
+                <div class="item-details">
+                    <div class="item-name">Refreshing Cold Coffee</div>
+                </div>
+            </div>
+            <div class="pricing-section price-₹120">
+                <div class="original-price"></div>
+                <div class="discounted-price"></div>
+                <div class="savings"></div>
+            </div>
+            <button onclick="alert('Added Cold Coffee to order at discounted price of ₹108!')">Add to Order</button>
+            <span class="discount-badge">10% OFF</span>
+        </li>
+        
+        <li>
+            <div class="item-info">
+                <img src="{{ url_for('static', filename='frenchesfries.jpg') }}" alt="French Fries" />
+                <div class="item-details">
+                    <div class="item-name">Crispy French Fries</div>
+                </div>
+            </div>
+            <div class="pricing-section price-₹80">
+                <div class="original-price"></div>
+                <div class="discounted-price"></div>
+                <div class="savings"></div>
+            </div>
+            <button onclick="alert('Added French Fries to order at discounted price of ₹72!')">Add to Order</button>
+            <span class="discount-badge">10% OFF</span>
+        </li>
+        
+        <li>
+            <div class="item-info">
+                <img src="{{ url_for('static', filename='hazelnut_coffee.jpg') }}" alt="Hazelnut Coffee" />
+                <div class="item-details">
+                    <div class="item-name">Aromatic Hazelnut Coffee</div>
+                </div>
+            </div>
+            <div class="pricing-section price-₹180">
+                <div class="original-price"></div>
+                <div class="discounted-price"></div>
+                <div class="savings"></div>
+            </div>
+            <button onclick="alert('Added Hazelnut Coffee to order at discounted price of ₹162!')">Add to Order</button>
+            <span class="discount-badge">10% OFF</span>
+        </li>
+        
+        <li>
+            <div class="item-info">
+                <img src="{{ url_for('static', filename='hot_coffee.jpg') }}" alt="Hot Coffee" />
+                <div class="item-details">
+                    <div class="item-name">Classic Hot Coffee</div>
+                </div>
+            </div>
+            <div class="pricing-section price-₹100">
+                <div class="original-price"></div>
+                <div class="discounted-price"></div>
+                <div class="savings"></div>
+            </div>
+            <button onclick="alert('Added Hot Coffee to order at discounted price of ₹90!')">Add to Order</button>
+            <span class="discount-badge">10% OFF</span>
+        </li>
+        
+        <li>
+            <div class="item-info">
+                <img src="{{ url_for('static', filename='momo.jpg') }}" alt="Momo" />
+                <div class="item-details">
+                    <div class="item-name">Steamed Momo</div>
+                </div>
+            </div>
+            <div class="pricing-section price-₹140">
+                <div class="original-price"></div>
+                <div class="discounted-price"></div>
+                <div class="savings"></div>
+            </div>
+            <button onclick="alert('Added Momo to order at discounted price of ₹126!')">Add to Order</button>
+            <span class="discount-badge">10% OFF</span>
+        </li>
+        
+        <li>
+            <div class="item-info">
+                <img src="{{ url_for('static', filename='pizza.jpg') }}" alt="Pizza" />
+                <div class="item-details">
+                    <div class="item-name">Cheesy Pizza</div>
+                </div>
+            </div>
+            <div class="pricing-section price-₹250">
+                <div class="original-price"></div>
+                <div class="discounted-price"></div>
+                <div class="savings"></div>
+            </div>
+            <button onclick="alert('Added Pizza to order at discounted price of ₹225!')">Add to Order</button>
+            <span class="discount-badge">10% OFF</span>
+        </li>
+        
+        <li>
+            <div class="item-info">
+                <img src="{{ url_for('static', filename='sandwiches.jpg') }}" alt="Sandwiches" />
+                <div class="item-details">
+                    <div class="item-name">Fresh Sandwiches</div>
+                </div>
+            </div>
+            <div class="pricing-section price-₹120">
+                <div class="original-price"></div>
+                <div class="discounted-price"></div>
+                <div class="savings"></div>
+            </div>
+            <button onclick="alert('Added Sandwiches to order at discounted price of ₹108!')">Add to Order</button>
+            <span class="discount-badge">10% OFF</span>
+        </li>
+    </ul>
+
+    <div class="logout-section">
+        <a href="{{ url_for('menu') }}" class="regular-menu-btn">View Regular Menu</a>
+        <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+    </div>
+</div>
+{% endblock %}

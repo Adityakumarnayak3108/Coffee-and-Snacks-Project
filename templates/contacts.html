@@ -1,0 +1,778 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ title }} - Vibe Cafe{% endblock %}
+
+{% block content %}
+<div class="contact-top-image" style="width:100%;text-align:center;margin-bottom:2rem;">
+    <img src="{{ url_for('static', filename='contact.jpg') }}" alt="Contact Vibe Cafe" style="width:100%;max-height:400px;object-fit:cover;border-radius:20px;">
+</div>
+<!-- Hero Section with Parallax Effect -->
+<div class="hero-section">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <h1 class="hero-title">Get in Touch</h1>
+        <p class="hero-subtitle">We'd love to hear from you! Let's brew something amazing together.</p>
+        <div class="floating-elements">
+            <div class="floating-icon"><i class="fas fa-coffee"></i></div>
+            <div class="floating-icon"><i class="fas fa-heart"></i></div>
+            <div class="floating-icon"><i class="fas fa-phone"></i></div>
+        </div>
+    </div>
+</div>
+
+<div class="contact-container">
+    <!-- Contact Methods Section -->
+    <section class="contact-methods">
+        <div class="method-grid">
+            <div class="method-card phone-card">
+                <div class="method-icon">
+                    <i class="fas fa-phone-alt"></i>
+                </div>
+                <h3>Call Us</h3>
+                <p>Quick questions? Give us a ring!</p>
+                <div class="contact-info">
+                    <span class="response-time">Instant response</span>
+                </div>
+            </div>
+            
+            <div class="method-card email-card">
+                <div class="method-icon">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <h3>Email Us</h3>
+                <p>Detailed inquiries welcome</p>
+                <div class="contact-info">
+                    <span class="response-time">Reply within 2 hours</span>
+                </div>
+            </div>
+            
+            <div class="method-card visit-card">
+                <div class="method-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <h3>Visit Us</h3>
+                <p>Come experience our cozy atmosphere</p>
+                <div class="contact-info">
+                    <span class="response-time">Open 7 days a week</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Contacts Section -->
+    <section class="team-section">
+        <div class="section-header">
+            <h2>Meet Our Team</h2>
+            <p>Connect directly with our friendly team members</p>
+        </div>
+        
+        <div class="team-grid">
+            <div class="team-member">
+                <div class="member-avatar">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+                <div class="member-info">
+                    <h4>Aditya</h4>
+                    <p class="member-role">General Manager</p>
+                    <a href="tel:+916371027810" class="contact-link">
+                        <i class="fas fa-phone"></i>
+                        +91 63710 27810
+                    </a>
+                </div>
+            </div>
+            
+            <div class="team-member">
+                <div class="member-avatar">
+                    <i class="fas fa-coffee"></i>
+                </div>
+                <div class="member-info">
+                    <h4>Ansuman</h4>
+                    <p class="member-role">Head Barista</p>
+                    <a href="tel:+918260717789" class="contact-link">
+                        <i class="fas fa-phone"></i>
+                        +91 82607 17789
+                    </a>
+                </div>
+            </div>
+            
+            <div class="team-member">
+                <div class="member-avatar">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <div class="member-info">
+                    <h4>Pragnya</h4>
+                    <p class="member-role">Events Coordinator</p>
+                    <a href="tel:+917077877652" class="contact-link">
+                        <i class="fas fa-phone"></i>
+                        +91 70778 77652
+                    </a>
+                </div>
+            </div>
+            
+            <div class="team-member">
+                <div class="member-avatar">
+                    <i class="fas fa-utensils"></i>
+                </div>
+                <div class="member-info">
+                    <h4>Hritesh</h4>
+                    <p class="member-role">Kitchen Manager</p>
+                    <a href="tel:+919439964150" class="contact-link">
+                        <i class="fas fa-phone"></i>
+                        +91 94399 64150
+                    </a>
+                </div>
+            </div>
+            
+            <div class="team-member">
+                <div class="member-avatar">
+                    <i class="fas fa-handshake"></i>
+                </div>
+                <div class="member-info">
+                    <h4>Saransh</h4>
+                    <p class="member-role">Partnerships</p>
+                    <a href="tel:+918249479239" class="contact-link">
+                        <i class="fas fa-phone"></i>
+                        +91 82494 79239
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Info Cards Section -->
+    <section class="info-section">
+        <div class="info-grid">
+            <div class="info-card hours-card">
+                <div class="card-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <h3>Working Hours</h3>
+                <div class="hours-info">
+                    <p><strong>Daily:</strong> 7:00 AM – 10:00 PM</p>
+                    <p class="highlight">Open every day of the week</p>
+                </div>
+            </div>
+            
+            <div class="info-card response-card">
+                <div class="card-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h3>Fast Response</h3>
+                <div class="response-info">
+                    <p><strong>Average:</strong> Under 30 minutes</p>
+                    <p class="highlight">We value your time</p>
+                </div>
+            </div>
+            
+            <div class="info-card events-card">
+                <div class="card-icon">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <h3>Event Bookings</h3>
+                <div class="events-info">
+                    <p><strong>Contact:</strong> Pragnya</p>
+                    <p class="highlight">Perfect for celebrations</p>
+                </div>
+            </div>
+            
+            <div class="info-card partnerships-card">
+                <div class="card-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3>Partnerships</h3>
+                <div class="partnerships-info">
+                    <p><strong>Contact:</strong> Saransh</p>
+                    <p class="highlight">Let's collaborate</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form Section -->
+    <section class="form-section">
+        <div class="form-container">
+            <div class="form-header">
+                <h2>Send Us a Message</h2>
+                <p>Whether it's feedback, questions, or just a friendly hello – we're all ears!</p>
+            </div>
+            
+            <form method="POST" action="/contact" class="contact-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">
+                            <i class="fas fa-user"></i>
+                            Your Name
+                        </label>
+                        <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">
+                            <i class="fas fa-envelope"></i>
+                            Email Address
+                        </label>
+                        <input type="email" id="email" name="email" placeholder="your@email.com" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="subject">
+                        <i class="fas fa-tag"></i>
+                        Subject
+                    </label>
+                    <select id="subject" name="subject" required>
+                        <option value="">Choose a topic...</option>
+                        <option value="general">General Inquiry</option>
+                        <option value="feedback">Feedback</option>
+                        <option value="events">Event Booking</option>
+                        <option value="partnerships">Partnership</option>
+                        <option value="complaints">Complaint</option>
+                        <option value="compliments">Compliment</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="message">
+                        <i class="fas fa-comment"></i>
+                        Your Message
+                    </label>
+                    <textarea id="message" name="message" rows="6" placeholder="Tell us what's on your mind..." required></textarea>
+                </div>
+                
+                <div class="form-footer">
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-paper-plane"></i>
+                        <span>Send Message</span>
+                    </button>
+                    <p class="form-note">We'll get back to you within 2 hours during business hours.</p>
+                </div>
+            </form>
+        </div>
+    </section>
+</div>
+
+<style>
+/* Hero Section */
+.hero-section {
+    position: relative;
+    height: 400px;
+    background: linear-gradient(135deg, #6f4e37 0%, #3c2415 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    margin-bottom: 0;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="80" r="1.5" fill="rgba(255,255,255,0.1)"/><circle cx="60" cy="30" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="30" cy="70" r="1.5" fill="rgba(255,255,255,0.1)"/><circle cx="90" cy="40" r="1" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+    animation: float 30s infinite linear;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: white;
+    max-width: 800px;
+    padding: 0 2rem;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-family: 'Playfair Display', serif;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+    animation: slideInDown 1s ease-out;
+}
+
+.hero-subtitle {
+    font-size: 1.3rem;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+    animation: slideInUp 1s ease-out 0.3s both;
+}
+
+.floating-elements {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+}
+
+.floating-icon {
+    position: absolute;
+    font-size: 1.5rem;
+    color: rgba(255,255,255,0.2);
+    animation: floatIcon 6s infinite ease-in-out;
+}
+
+.floating-icon:nth-child(1) {
+    top: 20%;
+    left: 15%;
+    animation-delay: 0s;
+}
+
+.floating-icon:nth-child(2) {
+    top: 60%;
+    right: 20%;
+    animation-delay: 2s;
+}
+
+.floating-icon:nth-child(3) {
+    bottom: 30%;
+    left: 70%;
+    animation-delay: 4s;
+}
+
+/* Contact Container */
+.contact-container {
+    background: linear-gradient(135deg, var(--sub-bg) 0%, var(--coffee-light) 100%);
+    padding: 4rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Contact Methods */
+.contact-methods {
+    margin-bottom: 4rem;
+}
+
+.method-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.method-card {
+    background: var(--warm-white);
+    padding: 2.5rem;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.method-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent), var(--coffee-light));
+}
+
+.method-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 25px 60px rgba(0,0,0,0.15);
+}
+
+.method-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1.5rem;
+    background: linear-gradient(135deg, var(--accent), var(--coffee-dark));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: white;
+    transition: all 0.4s ease;
+}
+
+.method-card:hover .method-icon {
+    transform: scale(1.1) rotate(10deg);
+}
+
+.method-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--text);
+}
+
+.method-card p {
+    margin-bottom: 1.5rem;
+    color: rgba(44, 24, 16, 0.8);
+}
+
+.response-time {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--accent), var(--coffee-dark));
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Team Section */
+.team-section {
+    margin-bottom: 4rem;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.section-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: var(--text);
+    margin-bottom: 1rem;
+}
+
+.section-header p {
+    font-size: 1.1rem;
+    color: rgba(44, 24, 16, 0.8);
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+.team-member {
+    background: var(--warm-white);
+    padding: 2rem;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    transition: all 0.4s ease;
+    position: relative;
+}
+
+.team-member:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+}
+
+.member-avatar {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 1.5rem;
+    background: linear-gradient(135deg, var(--accent), var(--coffee-dark));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: white;
+}
+
+.member-info h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+}
+
+.member-role {
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+}
+
+.contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    background: rgba(111, 78, 55, 0.1);
+}
+
+.contact-link:hover {
+    background: var(--accent);
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* Info Section */
+.info-section {
+    margin-bottom: 4rem;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.info-card {
+    background: var(--warm-white);
+    padding: 2rem;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    transition: all 0.4s ease;
+    position: relative;
+}
+
+.info-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+}
+
+.card-icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 1.5rem;
+    background: linear-gradient(135deg, var(--accent), var(--coffee-dark));
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    color: white;
+}
+
+.info-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    color: var(--text);
+}
+
+.info-card p {
+    margin-bottom: 0.5rem;
+    color: rgba(44, 24, 16, 0.8);
+}
+
+.highlight {
+    color: var(--accent);
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+/* Form Section */
+.form-section {
+    background: var(--warm-white);
+    padding: 3rem;
+    border-radius: 25px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+}
+
+.form-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.form-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.form-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    color: var(--text);
+    margin-bottom: 1rem;
+}
+
+.form-header p {
+    font-size: 1.1rem;
+    color: rgba(44, 24, 16, 0.8);
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.8rem;
+    font-weight: 600;
+    color: var(--text);
+    font-size: 0.95rem;
+}
+
+.form-group label i {
+    color: var(--accent);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    padding: 1rem 1.2rem;
+    border: 2px solid rgba(111, 78, 55, 0.2);
+    border-radius: 15px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: white;
+    color: var(--text);
+    font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px rgba(111, 78, 55, 0.1);
+    transform: translateY(-2px);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.form-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.submit-btn {
+    background: linear-gradient(135deg, var(--accent), var(--coffee-dark));
+    color: white;
+    border: none;
+    padding: 1rem 2.5rem;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    box-shadow: 0 8px 25px rgba(111, 78, 55, 0.3);
+}
+
+.submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(111, 78, 55, 0.4);
+}
+
+.form-note {
+    font-size: 0.9rem;
+    color: rgba(44, 24, 16, 0.7);
+    text-align: center;
+    margin: 0;
+}
+
+/* Animations */
+@keyframes slideInDown {
+    from {
+        transform: translateY(-100px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        transform: translateY(100px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes floatIcon {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-20px) rotate(180deg);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .contact-container {
+        padding: 2rem 1rem;
+    }
+    
+    .method-grid,
+    .team-grid,
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .form-section {
+        padding: 2rem 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .method-card,
+    .team-member,
+    .info-card {
+        padding: 1.5rem;
+    }
+    
+    .form-section {
+        padding: 1.5rem 1rem;
+    }
+}
+</style>
+{% endblock %}

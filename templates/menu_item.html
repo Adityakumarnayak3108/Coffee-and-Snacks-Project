@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+{% block title %}{{ item.name }} - Vibe Cafe{% endblock %}
+{% block content %}
+<div class="centered-container">
+  <div class="menu-item-detail" style="max-width:400px; background:#fff8f0; border-radius:16px; box-shadow:0 4px 24px rgba(0,0,0,0.08); padding:2rem; text-align:center;">
+    {% if item.image %}
+      <img src="{{ url_for('static', filename=item.image) }}" alt="{{ item.name }}" style="width:100%; max-width:320px; border-radius:12px; margin-bottom:1rem;">
+    {% endif %}
+    <h2 style="font-family:'Playfair Display',serif; color:var(--accent);">{{ item.name }}</h2>
+    <p style="color:var(--text); font-size:1.1rem;">{{ item.description }}</p>
+    <p style="font-size:1.2rem; color:var(--coffee-dark); font-weight:bold;">₹{{ item.price }}</p>
+    <form method="post" action="{{ url_for('add_to_cart') }}">
+      <button type="button" class="add-to-cart-btn" data-name="{{ item.name }}" data-price="{{ item.price }}">Add to Cart</button>
+    </form>
+    <a href="{{ url_for('menu') }}" style="display:inline-block; margin-top:1.5rem; color:var(--accent); text-decoration:underline;">Back to Menu</a>
+  </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.add-to-cart-btn').forEach(function(button) {
+    button.addEventListener('click', function() {
+      var name = this.getAttribute('data-name');
+      var price = parseFloat(this.getAttribute('data-price'));
+      if (!name || isNaN(price)) {
+        alert('Invalid item data');
+        return;
+      }
+      this.disabled = true;
+      var originalText = this.textContent;
+      this.textContent = 'Adding...';
+      fetch('/add_to_cart', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: JSON.stringify({
+          name: name,
+          price: price
+        })
+      })
+      .then(function(response) {
+        if (!response.ok) throw new Error('Network response was not ok');
+        return response.json();
+      })
+      .then(function(data) {
+        alert(data.message || 'Added to cart successfully');
+      })
+      .catch(function(error) {
+        alert('Error adding to cart. Please try again.');
+      })
+      .finally(() => {
+        button.disabled = false;
+        button.textContent = originalText;
+      });
+    });
+  });
+});
+</script>
+{% endblock %}

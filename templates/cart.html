@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="sub-container">
+  <div class="container">
+    <h2>Your Cart</h2>
+    {% if cart %}
+      <ul>
+        {% for item in cart %}
+          <li>{{ item.name }} - ₹{{ item.price }}</li>
+        {% endfor %}
+      </ul>
+      <p><strong>Total:</strong> ₹{{ cart | sum(attribute='price') }}</p>
+      <div class="cart-actions">
+        <a href="/clear-cart" class="btn btn-danger" onclick="return confirm('Are you sure you want to clear your cart?')">Clear Cart</a>
+        <button type="button" class="btn btn-primary">Proceed to Checkout</button>
+      </div>
+    {% else %}
+      <p>Your cart is empty.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

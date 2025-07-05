@@ -1,0 +1,623 @@
+{% extends "layout.html" %}
+
+{% block title %}Join Vibe Cafe - Sign Up{% endblock %}
+
+{% block content %}
+<style>
+    /* Center container for signup form */
+    .centered-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: calc(100vh - 120px); /* adjust if nav/footer height differs */
+        padding: 2rem;
+    }
+
+    .signup-container {
+        max-width: 500px;
+        width: 100%;
+        background: rgba(250, 248, 243, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 25px;
+        padding: 3rem 2.5rem;
+        box-shadow: 
+            0 25px 50px rgba(0, 0, 0, 0.15),
+            0 15px 30px rgba(111, 78, 55, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        position: relative;
+        animation: fadeInUp 0.8s ease-out;
+        color: var(--text);
+        font-family: 'Inter', sans-serif;
+    }
+
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .signup-container::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: linear-gradient(45deg, var(--gold), var(--accent), var(--coffee-light), var(--gold));
+        border-radius: 25px;
+        z-index: -1;
+        animation: pulse 4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+    }
+
+    .signup-header {
+        text-align: center;
+        margin-bottom: 2rem;
+        animation: fadeInUp 0.8s ease-out 0.2s both;
+    }
+
+    .signup-header h1 {
+        font-family: 'Dancing Script', cursive;
+        font-size: 3rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, var(--accent), var(--coffee-dark));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 0.5rem;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .signup-header p {
+        color: var(--text);
+        font-size: 1.1rem;
+        opacity: 0.8;
+        font-weight: 400;
+    }
+
+    .discount-banner {
+        background: linear-gradient(135deg, var(--gold), #f1c40f);
+        color: var(--coffee-dark);
+        padding: 1rem 1.5rem;
+        border-radius: 15px;
+        text-align: center;
+        font-weight: 600;
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 8px 25px rgba(244, 197, 142, 0.3);
+        position: relative;
+        overflow: hidden;
+        animation: fadeInUp 0.8s ease-out 0.4s both;
+    }
+
+    .discount-banner::before, .discount-banner::after {
+        content: '🎉';
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 1.5rem;
+        animation: pulse 2s ease-in-out infinite;
+    }
+
+    .discount-banner::before {
+        left: 1rem;
+    }
+
+    .discount-banner::after {
+        right: 1rem;
+        animation-delay: 1s;
+    }
+
+    .benefits-section {
+        background: rgba(111, 78, 55, 0.05);
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        border: 1px solid rgba(111, 78, 55, 0.1);
+        animation: fadeInUp 0.8s ease-out 0.6s both;
+    }
+
+    .benefits-section h3 {
+        font-family: 'Playfair Display', serif;
+        color: var(--accent);
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .benefits-section h3::before {
+        content: '✨';
+        font-size: 1.2rem;
+    }
+
+    .benefits-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .benefits-list li {
+        padding: 0.5rem 0;
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        transition: all 0.3s ease;
+    }
+
+    .benefits-list li::before {
+        content: '☕';
+        font-size: 1.1rem;
+        min-width: 1.5rem;
+    }
+
+    .benefits-list li:hover {
+        transform: translateX(5px);
+        color: var(--accent);
+    }
+
+    .signup-form {
+        animation: fadeInUp 0.8s ease-out 0.8s both;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+        position: relative;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+
+    .form-label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: var(--text);
+        font-size: 0.95rem;
+    }
+
+    .form-label i {
+        color: var(--accent);
+        font-size: 0.9rem;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 1rem 1.25rem;
+        border: 2px solid rgba(111, 78, 55, 0.2);
+        border-radius: 15px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(10px);
+        font-family: inherit;
+        color: var(--text);
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 4px rgba(111, 78, 55, 0.1);
+        transform: translateY(-2px);
+        background: rgba(255, 255, 255, 0.95);
+    }
+
+    .form-control::placeholder {
+        color: rgba(44, 24, 16, 0.5);
+        font-style: italic;
+    }
+
+    .form-control:focus::placeholder {
+        color: transparent;
+    }
+
+    select.form-control {
+        cursor: pointer;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236f4e37' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+        background-position: right 0.75rem center;
+        background-repeat: no-repeat;
+        background-size: 1.5em 1.5em;
+        padding-right: 2.5rem;
+        appearance: none;
+    }
+
+    .form-control.error {
+        border-color: var(--error);
+        background: rgba(231, 76, 60, 0.05);
+    }
+
+    .field-error {
+        color: var(--error);
+        font-size: 0.85rem;
+        margin-top: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
+    }
+
+    .field-error:not(:empty) {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .field-error::before {
+        content: '⚠️';
+        font-size: 0.9rem;
+    }
+
+    .submit-btn {
+        width: 100%;
+        padding: 1.2rem 2rem;
+        background: linear-gradient(135deg, var(--accent), var(--coffee-dark));
+        color: white;
+        border: none;
+        border-radius: 15px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.4s ease;
+        box-shadow: 0 8px 25px rgba(111, 78, 55, 0.3);
+        position: relative;
+        overflow: hidden;
+        font-family: inherit;
+    }
+
+    .submit-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s ease;
+    }
+
+    .submit-btn:hover::before {
+        left: 100%;
+    }
+
+    .submit-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 35px rgba(111, 78, 55, 0.4);
+    }
+
+    .submit-btn:active {
+        transform: translateY(-1px);
+    }
+
+    .submit-btn:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    .form-footer {
+        margin-top: 2rem;
+        text-align: center;
+        padding-top: 2rem;
+        border-top: 1px solid rgba(111, 78, 55, 0.1);
+        animation: fadeInUp 0.8s ease-out 1s both;
+    }
+
+    .form-footer p {
+        color: var(--text);
+        margin-bottom: 0.5rem;
+        opacity: 0.8;
+    }
+
+    .form-footer a {
+        color: var(--accent);
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .form-footer a::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--accent);
+        transition: width 0.3s ease;
+    }
+
+    .form-footer a:hover::after {
+        width: 100%;
+    }
+
+    .form-footer a:hover {
+        color: var(--coffee-dark);
+    }
+</style>
+
+<div class="centered-container">
+    <div class="signup-container">
+        <div class="signup-header">
+            <h1>Join Vibe Cafe</h1>
+            <p>Become a member and enjoy exclusive benefits</p>
+        </div>
+
+        <div class="discount-banner">
+            Special Offer: Get 10% Discount on All Purchases!
+        </div>
+
+        <div class="benefits-section">
+            <h3>Member Benefits</h3>
+            <ul class="benefits-list">
+                <li>10% discount on all menu items</li>
+                <li>Priority access to new items</li>
+                <li>Special member-only promotions</li>
+                <li>Birthday treats and surprises</li>
+            </ul>
+        </div>
+
+        <div class="flash-messages">
+            <!-- Flash messages would go here -->
+        </div>
+
+        <form class="signup-form" method="post" novalidate>
+            <div class="form-group">
+                <label class="form-label" for="username">
+                    <i class="fas fa-user"></i>
+                    Username
+                </label>
+                <input 
+                    type="text" 
+                    id="username" 
+                    name="username" 
+                    class="form-control" 
+                    placeholder="Choose a username (4-15 characters)"
+                    autocomplete="username"
+                    required
+                />
+                <span class="field-error" id="username-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="email">
+                    <i class="fas fa-envelope"></i>
+                    Email Address
+                </label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    class="form-control" 
+                    placeholder="Enter your email address"
+                    autocomplete="email"
+                    required
+                />
+                <span class="field-error" id="email-error"></span>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label" for="gender">
+                        <i class="fas fa-venus-mars"></i>
+                        Gender
+                    </label>
+                    <select id="gender" name="gender" class="form-control" required>
+                        <option value="">Select Gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                        <option value="prefer-not-to-say">Prefer not to say</option>
+                    </select>
+                    <span class="field-error" id="gender-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="dob">
+                        <i class="fas fa-birthday-cake"></i>
+                        Date of Birth
+                    </label>
+                    <input 
+                        type="date" 
+                        id="dob" 
+                        name="dob" 
+                        class="form-control"
+                        required
+                    />
+                    <span class="field-error" id="dob-error"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="password">
+                    <i class="fas fa-lock"></i>
+                    Password
+                </label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    class="form-control" 
+                    placeholder="Create a password (5-15 characters)"
+                    autocomplete="new-password"
+                    required
+                />
+                <span class="field-error" id="password-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="confirm_password">
+                    <i class="fas fa-lock"></i>
+                    Confirm Password
+                </label>
+                <input 
+                    type="password" 
+                    id="confirm_password" 
+                    name="confirm_password" 
+                    class="form-control" 
+                    placeholder="Confirm your password"
+                    autocomplete="new-password"
+                    required
+                />
+                <span class="field-error" id="confirm-password-error"></span>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    <i class="fas fa-user-plus"></i>
+                    Create My Account
+                </button>
+            </div>
+        </form>
+
+        <div class="form-footer">
+            <p>Already have an account?</p>
+            <a href="/login">Login here</a>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('.signup-form');
+        const submitBtn = document.getElementById('submitBtn');
+
+        const validators = {
+            username: function(value) {
+                if (!value) return 'Username is required';
+                if (value.length < 4) return 'Username must be at least 4 characters';
+                if (value.length > 15) return 'Username must be less than 15 characters';
+                if (!/^[a-zA-Z0-9_]+$/.test(value)) return 'Username can only contain letters, numbers, and underscores';
+                return '';
+            },
+            email: function(value) {
+                if (!value) return 'Email is required';
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return 'Please enter a valid email address';
+                return '';
+            },
+            gender: function(value) {
+                if (!value) return 'Please select a gender';
+                return '';
+            },
+            dob: function(value) {
+                if (!value) return 'Date of birth is required';
+                const birthDate = new Date(value);
+                const today = new Date();
+                let age = today.getFullYear() - birthDate.getFullYear();
+                const m = today.getMonth() - birthDate.getMonth();
+                if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+                if (age < 13) return 'You must be at least 13 years old to register';
+                if (birthDate > today) return 'Date of birth cannot be in the future';
+                return '';
+            },
+            password: function(value) {
+                if (!value) return 'Password is required';
+                if (value.length < 5) return 'Password must be at least 5 characters';
+                if (value.length > 15) return 'Password must be less than 15 characters';
+                return '';
+            },
+            confirm_password: function(value) {
+                const password = document.getElementById('password').value;
+                if (!value) return 'Please confirm your password';
+                if (value !== password) return 'Passwords do not match';
+                return '';
+            }
+        };
+
+        function validateField(fieldName, field, errorSpan) {
+            const value = field.value.trim();
+            const errorMessage = validators[fieldName](value);
+
+            if (errorMessage) {
+                field.classList.add('error');
+                errorSpan.textContent = errorMessage;
+                field.setAttribute('aria-invalid', 'true');
+            } else {
+                field.classList.remove('error');
+                errorSpan.textContent = '';
+                field.removeAttribute('aria-invalid');
+            }
+
+            return !errorMessage;
+        }
+
+        Object.keys(validators).forEach(fieldName => {
+            const field = document.getElementById(fieldName);
+            const errorSpan = document.getElementById(fieldName.replace('_', '-') + '-error');
+
+            if (field && errorSpan) {
+                field.addEventListener('blur', function() {
+                    validateField(fieldName, field, errorSpan);
+                });
+
+                if (fieldName === 'confirm_password') {
+                    field.addEventListener('input', function() {
+                        if (this.value || document.getElementById('password').value) {
+                            validateField(fieldName, field, errorSpan);
+                        }
+                    });
+                }
+
+                if (field.tagName === 'SELECT' || field.type === 'date') {
+                    field.addEventListener('change', function() {
+                        validateField(fieldName, field, errorSpan);
+                    });
+                }
+            }
+        });
+
+        const passwordField = document.getElementById('password');
+        const confirmPasswordField = document.getElementById('confirm_password');
+        const confirmPasswordError = document.getElementById('confirm-password-error');
+
+        if (passwordField && confirmPasswordField && confirmPasswordError) {
+            passwordField.addEventListener('input', function() {
+                if (confirmPasswordField.value) {
+                    validateField('confirm_password', confirmPasswordField, confirmPasswordError);
+                }
+            });
+        }
+
+        form.addEventListener('submit', function(e) {
+            let formIsValid = true;
+            Object.keys(validators).forEach(fieldName => {
+                const field = document.getElementById(fieldName);
+                const errorSpan = document.getElementById(fieldName.replace('_', '-') + '-error');
+                if (field && errorSpan) {
+                    if (!validateField(fieldName, field, errorSpan)) {
+                        formIsValid = false;
+                    }
+                }
+            });
+
+            if (!formIsValid) {
+                e.preventDefault();
+                const firstInvalidField = document.querySelector('.form-control.error');
+                if (firstInvalidField) {
+                    firstInvalidField.focus();
+                }
+                return false;
+            }
+
+            // Loading state
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
+            form.classList.add('loading');
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,296 @@
+{% extends "layout.html" %}
+{% block title %}Welcome to Vibe Cafe{% endblock %}
+
+{% block content %}
+<style>
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  .hero-container {
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .background-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.6) contrast(1.1);
+    z-index: 1;
+  }
+
+  .video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(243, 233, 220, 0.3) 0%,
+      rgba(210, 105, 30, 0.2) 50%,
+      rgba(111, 78, 55, 0.4) 100%
+    );
+    z-index: 2;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 3;
+    text-align: center;
+    padding: 2rem;
+    color: #fff;
+    backdrop-filter: blur(2px);
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    max-width: 600px;
+    margin: 0 1rem;
+    animation: fadeInUp 1s ease-out;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .hero-content h1 {
+    font-size: 4rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    letter-spacing: -1px;
+  }
+
+  .hero-content p {
+    font-size: 1.4rem;
+    font-weight: 400;
+    margin-bottom: 2rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    line-height: 1.6;
+    opacity: 0.95;
+  }
+
+  .btn-primary {
+    background: linear-gradient(45deg, #d2691e, #ff8c42);
+    color: #fff;
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: inline-block;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 15px rgba(210, 105, 30, 0.4);
+  }
+
+  .btn-primary:hover {
+    background: linear-gradient(45deg, #ff8c42, #d2691e);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(210, 105, 30, 0.6);
+  }
+
+  .main-content {
+    background: #fff;
+    position: relative;
+    z-index: 4;
+  }
+
+  .features {
+    background: linear-gradient(135deg, #fff3e0 0%, #ffeaa7 100%);
+    padding: 4rem 1rem;
+    position: relative;
+  }
+
+  .features::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 243, 224, 1));
+    z-index: 1;
+  }
+
+  .features-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+
+  .feature {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    padding: 2.5rem 2rem;
+    text-align: center;
+    box-shadow: 0 8px 25px rgba(111, 78, 55, 0.15);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(210, 105, 30, 0.1);
+  }
+
+  .feature:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 35px rgba(111, 78, 55, 0.25);
+  }
+
+  .feature-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #d2691e, #ff8c42);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    font-size: 1.5rem;
+    color: white;
+  }
+
+  .feature h2 {
+    color: #6f4e37;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+
+  .feature p {
+    color: #8b6e4a;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .section-title {
+    text-align: center;
+    color: #6f4e37;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  .section-subtitle {
+    text-align: center;
+    color: #8b6e4a;
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  @media (max-width: 768px) {
+    .hero-content h1 {
+      font-size: 2.5rem;
+    }
+    
+    .hero-content p {
+      font-size: 1.2rem;
+    }
+    
+    .hero-content {
+      padding: 1.5rem;
+      margin: 0 0.5rem;
+    }
+    
+    .btn-primary {
+      padding: 0.8rem 2rem;
+      font-size: 1rem;
+    }
+    
+    .features {
+      padding: 3rem 1rem;
+    }
+    
+    .section-title {
+      font-size: 2rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero-content h1 {
+      font-size: 2rem;
+    }
+    
+    .features-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+</style>
+
+<div class="hero-container">
+  <video autoplay muted loop playsinline class="background-video" aria-label="Coffee brewing video background">
+    <source src="{{ url_for('static', filename='vibecafehome.gig.mp4') }}" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+  <div class="video-overlay"></div>
+  
+  <div class="hero-content">
+    <h1>Welcome to Vibe Cafe</h1>
+    <p>Your neighborhood spot for the finest coffee and delicious snacks, crafted with passion and served with love.</p>
+    <a href="{{ url_for('menu') }}" class="btn-primary">Order Now</a>
+  </div>
+</div>
+
+<main class="main-content">
+  <section class="features">
+    <div class="features-container">
+      <h2 class="section-title">Why Choose Vibe Cafe?</h2>
+      <p class="section-subtitle">Experience the perfect blend of quality, comfort, and community in every visit</p>
+      
+      <div class="features-grid">
+        <div class="feature">
+          <div class="feature-icon">☕</div>
+          <h2>Freshly Brewed Coffee</h2>
+          <p>Enjoy expertly crafted espresso, cappuccinos, lattes, and more made from ethically sourced beans. Our skilled baristas ensure every cup is perfectly brewed to bring out the rich, complex flavors you love.</p>
+        </div>
+        
+        <div class="feature">
+          <div class="feature-icon">🥐</div>
+          <h2>Delicious Snacks</h2>
+          <p>Pair your coffee with fresh pastries, muffins, bagels, and healthy granola bars baked daily in our kitchen. From sweet treats to savory bites, we have something to satisfy every craving.</p>
+        </div>
+        
+        <div class="feature">
+          <div class="feature-icon">🏡</div>
+          <h2>Cozy Atmosphere</h2>
+          <p>Relax in our warm, inviting space designed for comfort and connection. Whether you're catching up with friends, working remotely, or enjoying a quiet moment, our cafe provides the perfect ambiance.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+{% endblock %}

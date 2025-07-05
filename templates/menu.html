@@ -1,0 +1,159 @@
+{% extends "layout.html" %}
+{% block title %}Vibe Cafe Menu{% endblock %}
+{% block content %}
+<h1>Vibe Cafe Menu</h1>
+<div class="menu-list">
+  {% for item in menu_items %}
+    <div class="menu-item {% if matched_item and matched_item.name == item.name %}highlight{% endif %}" id="item_{{ loop.index }}">
+      {% if item.image %}
+      <img src="{{ url_for('static', filename=item.image) }}" alt="{{ item.name }}" class="menu-item-img" onerror="this.style.display='none'">
+      {% endif %}
+      <div class="menu-item-info">
+        <h3>{{ item.name }}</h3>
+        <p>{{ item.description }}</p>
+        <p><strong>₹{{ item.price }}</strong></p>
+        <button class="add-to-cart-btn" data-name="{{ item.name }}" data-price="{{ item.price }}">Add to Cart</button>
+        <button class="order-now-btn" data-name="{{ item.name }}">Order Now</button>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+<style>
+  /* Base styles for menu items and list */
+  .menu-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    padding: 2rem;
+  }
+  .menu-item {
+    background: #f4c58e33; /* Semi-transparent golden background */
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    padding: 1rem;
+    max-width: 300px;
+    width: 100%;
+    text-align: center;
+    transition: box-shadow 0.3s ease, border 0.3s ease;
+  }
+  /* Highlight style for searched/matched item */
+  .menu-item.highlight {
+    border: 3px solid var(--accent); /* Accent border */
+    box-shadow: 0 0 20px var(--accent); /* Glow effect */
+    background: #f4c58e88; /* More opaque golden background */
+  }
+  .menu-item-img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 6px;
+  }
+  .menu-item-info {
+    margin-top: 0.5rem;
+  }
+  .menu-item h3 {
+    margin-bottom: 0.5rem;
+    font-size: 1.5rem;
+    color: var(--coffee-dark);
+  }
+  .menu-item p {
+    font-size: 0.95rem;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+  }
+  .menu-item strong {
+    font-size: 1.2rem;
+    color: var(--accent);
+  }
+  button {
+    margin: 5px;
+    background: var(--accent); /* Accent color for buttons */
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background: var(--coffee-dark); /* Darker coffee color on hover */
+  }
+  button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Scroll to the highlighted item if present
+  const highlighted = document.querySelector('.menu-item.highlight');
+  if (highlighted) {
+    highlighted.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  // Add to cart functionality
+  document.querySelectorAll('.add-to-cart-btn').forEach(function(button) {
+    button.addEventListener('click', function() {
+      var name = this.getAttribute('data-name');
+      var price = parseFloat(this.getAttribute('data-price'));
+      
+      if (!name || isNaN(price)) {
+        alert('Invalid item data');
+        return;
+      }
+      
+      // Disable button temporarily
+      this.disabled = true;
+      var originalText = this.textContent;
+      this.textContent = 'Adding...';
+      
+      fetch('/add_to_cart', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: JSON.stringify({
+          name: name,
+          price: price
+        })
+      })
+      .then(function(response) {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(function(data) {
+        alert(data.message || 'Added to cart successfully');
+      })
+      .catch(function(error) {
+        console.error('Error:', error);
+        alert('Error adding to cart. Please try again.');
+      })
+      .finally(() => {
+        // Re-enable button
+        button.disabled = false;
+        button.textContent = originalText;
+      });
+    });
+  });
+  
+  // Order now functionality
+  document.querySelectorAll('.order-now-btn').forEach(function(button) {
+    button.addEventListener('click', function() {
+      var name = this.getAttribute('data-name');
+      if (name) {
+        alert('Order placed for ' + name);
+        // You can replace this with actual order functionality (e.g., redirect to checkout)
+      } else {
+        alert('Invalid item');
+      }
+    });
+  });
+});
+</script>
+{% endblock %}
